@@ -18,14 +18,18 @@ func insertNode(head *linkNode,node *linkNode){
 		return
 	}
 
-	tmpNode := head
+	tmpNode := head.next
 	for{
+		if node.id>tmpNode.id{
+			break
+		}
 		if tmpNode.next==nil{
 			break;
 		}
 		tmpNode = tmpNode.next
 	}
 
+	node.next = tmpNode.next
 	tmpNode.next = node
 
 }
@@ -40,6 +44,26 @@ func showList(head *linkNode){
 	}
 	fmt.Println()
 }
+
+
+func deleteNode(head *linkNode,id int){
+
+	tmpNode := head.next
+	lastNode := head
+	for{
+		if tmpNode.next == nil{
+			break
+		}
+
+		if tmpNode.id==id{
+			lastNode.next = tmpNode.next
+			break;
+		}
+		tmpNode = tmpNode.next
+		lastNode = lastNode.next
+	}
+}
+
 
 
 func main(){
@@ -57,6 +81,24 @@ func main(){
 	showList(head)
 
 
+	head4 := &linkNode{
+		id:4,
+		name:"吴用",
+		nickname:"智多星",
+	}
+	insertNode(head,head4)
+	showList(head)
+
+
+	head3 := &linkNode{
+		id:3,
+		name:"林冲",
+		nickname:"豹子头",
+	}
+	insertNode(head,head3)
+	showList(head)
+
+
 	head2 := &linkNode{
 		id:2,
 		name:"卢俊义",
@@ -67,12 +109,9 @@ func main(){
 	//fmt.Println(head.next.next)
 
 	showList(head)
-	head3 := &linkNode{
-		id:3,
-		name:"林冲",
-		nickname:"豹子头",
-	}
-	insertNode(head,head3)
+
+
+	deleteNode(head,5)
 	showList(head)
 }
 
