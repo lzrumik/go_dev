@@ -1,34 +1,42 @@
 package main
 
-import (
-	"fmt"
-	"reflect"
-	"unsafe"
-)
-//参考 https://mp.weixin.qq.com/s/V4VXrhKzyw9r_1FIzH5sWw
-//Go语言slice的本质-SliceHeader
+import "fmt"
 
-type Slice []int
+type Point struct { X, Y int }
 
-func (A Slice)Append(value int) {
-	fmt.Printf("=========1== %p %d %d \n",A,len(A),cap(A))
-	A1 := append(A, value)
-	fmt.Printf("=========2== %p %d %d \n",A1,len(A1),cap(A1))
-
-
-	sh:=(*reflect.SliceHeader)(unsafe.Pointer(&A))
-	fmt.Printf("A  Data:%d,Len:%d,Cap:%d\n",sh.Data,sh.Len,sh.Cap)
-
-	sh1:=(*reflect.SliceHeader)(unsafe.Pointer(&A1))
-	fmt.Printf("A1 Data:%d,Len:%d,Cap:%d\n",sh1.Data,sh1.Len,sh1.Cap)
-
-}
+type Rect1 struct { Min, Max Point }
+type Rect2 struct { Min, Max *Point }
 
 func main() {
-	//mSlice := make(Slice, 10, 20)
-	mSlice := make(Slice, 10, 10)
-	mSlice.Append(5)
-	fmt.Println(mSlice)
+
+	p := Point{10,20}
+	pp := &Point{10,20}
+
+	fmt.Println(pp,p)
+	fmt.Printf("%p %d\n",pp,p)
+
+	r1 := Rect1{Point{10,20},Point{50,60}}
+	r2 := Rect2{&Point{10,20},&Point{50,60}}
+
+	fmt.Println(r1,r2)
+
+
+	fmt.Println("=================================")
+
+	tSlice := []int{1,2,3,4,5}
+	fmt.Println(tSlice)
+
+
+
+
+
+	var r *Rect = &Rect{10,20}
+	fmt.Println(r)
 }
 
+
+type Rect struct {
+	width float64
+	height float64
+}
 
