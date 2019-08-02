@@ -1,23 +1,29 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"runtime"
+	"sync"
 )
-func main() {
-	seen := make(map[string]bool) // a set of strings
-	input := bufio.NewScanner(os.Stdin)
-	for input.Scan() {
-		line := input.Text()
-		if !seen[line] {
-			seen[line] = true
-			fmt.Println(line)
-		}
-	}
 
-	if err := input.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "dedup: %v\n", err)
-		os.Exit(1)
-	}
+func main() {
+	a := 1
+	var wg sync.WaitGroup
+
+	wg.Add(2)
+	go func() {         //goroutine1
+		defer wg.Done()
+		a = a + 1
+	}()
+
+	go func() {         //goroutine2
+		defer wg.Done()
+		if a==1 {
+			runtime.Gosched()
+			fmt.Println("a==",a)
+		}
+	}()
+
+	runtime.Gosched()
+	wg.Wait()
 }
