@@ -2,19 +2,24 @@ package main
 
 import "fmt"
 
-func main(){
-	t := [3]int{1,2,3}
+func main() {
+	t := [3]int{1, 2, 3}
 
 	s := t[0:]
 	fmt.Println(s)
 
 	t[2] = 10
-	fmt.Println(t,s)
+	fmt.Println(t, s)
 
 	a := [...]int{0, 1, 2, 3, 4, 5}
 	fmt.Println(reverse(a[:])) //[5 4 3 2 1 0]
-}
 
+	arr := [...]int{0, 1, 2, 3, 4, 5, 6, 7}
+	s1 := arr[2:6] // 2 3 4 5
+	s2 := s1[3:5] // 5,6
+	fmt.Println(s1, s2)
+
+}
 
 //int数组翻转
 func reverse(s []int) []int {

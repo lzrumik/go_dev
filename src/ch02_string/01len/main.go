@@ -79,6 +79,13 @@ func utf8_demo(){
 }
 
 func main(){
+	var emptys string
+	fmt.Printf("111 %q 111\n",emptys)
+
+
+	var a,b,c,d = 3,4,true,"1234"
+	fmt.Println(a,b,c,d)
+	fmt.Println("%d %3.f %s %p \n",a,b,c,d)
 	//len_demo()
 	//compare()
 	//prefix_suffix()
