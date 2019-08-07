@@ -22,7 +22,7 @@ type Place struct {
 var DB *sqlx.DB
 
 func init(){
-	database,err := sqlx.Open("mysql","root:123456@tcp(127.0.0.1:3307)/gomysql")
+	database,err := sqlx.Open("mysql","root:123456@tcp(127.0.0.1:3306)/gomysql")
 	if err!=nil{
 		fmt.Println("exec failed," ,err)
 		return
@@ -30,20 +30,30 @@ func init(){
 	DB = database
 }
 
+/**
+docker rm -f mymysql
+
+docker run -p 3306:3306 --name mymysql  -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
+
+docker exec -it mymysql /bin/bash
+
+mysql -h127.0.0.1 -uroot -p123456
+
+执行test.sql
+ */
 func main(){
 
-	_,err := DB.Exec("update  person set username = ? where user_id = ?","stu01111",1)
+	r,err := DB.Exec("insert into person(username,sex,email) values (?,?,?)","stu01","man","stu01@qq.com")
 	if err!=nil{
-		fmt.Println("update failed," ,err)
+		fmt.Println("insert failed," ,err)
 		return
 	}
 
-	var person []Person
-	err = DB.Select(&person,"select user_id,username,sex,email from person where user_id = ?",1)
+	id,err := r.LastInsertId()
 	if err!=nil{
-		fmt.Println("select failed," ,err)
+		fmt.Println("get lastid  failed," ,err)
 		return
 	}
 
-	fmt.Println(person)
+	fmt.Println(id)
 }

@@ -22,7 +22,7 @@ type Place struct {
 var DB *sqlx.DB
 
 func init(){
-	database,err := sqlx.Open("mysql","root:123456@tcp(127.0.0.1:3307)/gomysql")
+	database,err := sqlx.Open("mysql","root:123456@tcp(127.0.0.1:3306)/gomysql")
 	if err!=nil{
 		fmt.Println("exec failed," ,err)
 		return
@@ -32,17 +32,18 @@ func init(){
 
 func main(){
 
-	r,err := DB.Exec("insert into person(username,sex,email) values (?,?,?)","stu01","man","stu01@qq.com")
+	_,err := DB.Exec("delete from  person  where user_id = ?",1)
 	if err!=nil{
-		fmt.Println("insert failed," ,err)
+		fmt.Println("delete failed," ,err)
 		return
 	}
 
-	id,err := r.LastInsertId()
+	var person []Person
+	err = DB.Select(&person,"select user_id,username,sex,email from person where user_id = ?",1)
 	if err!=nil{
-		fmt.Println("get lastid  failed," ,err)
+		fmt.Println("select failed," ,err)
 		return
 	}
 
-	fmt.Println(id)
+	fmt.Println(person)
 }
