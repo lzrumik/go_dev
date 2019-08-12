@@ -13,8 +13,10 @@ bee run
  */
 func main() {
 	orm.RegisterDataBase("default", "mysql", beego.AppConfig.String("sqlconn"))
-	beego.SetStaticPath("/down1", "download1")
-	beego.SetStaticPath("/down2", "download2")
+	//beego.SetStaticPath("/down1", "download1")
+
+	//开启session
+	beego.BConfig.WebConfig.Session.SessionOn = true
 
 	fmt.Println(beego.AppConfig.String("mysqlpass"))
 	beego.Run()
