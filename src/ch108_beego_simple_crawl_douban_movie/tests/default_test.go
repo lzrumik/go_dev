@@ -1,15 +1,14 @@
 package test
 
 import (
+	_ "ch108_beego_simple_crawl_douban_movie/routers"
 	"net/http"
 	"net/http/httptest"
-	"testing"
-	"runtime"
 	"path/filepath"
-	_ "ch108_beego_simple_crawl_douban_movie/routers"
+	"runtime"
+	"testing"
 
 	"github.com/astaxie/beego"
-	. "github.com/smartystreets/goconvey/convey"
 )
 
 func init() {
