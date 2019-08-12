@@ -1,4 +1,4 @@
-package _9json_benchmark
+package main
 
 
 type RepayInfo struct {
