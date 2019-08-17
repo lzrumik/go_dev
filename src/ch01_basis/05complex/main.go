@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+	"math/cmplx"
+)
 
 
 /**
@@ -15,4 +19,18 @@ func main(){
 	fmt.Println(x*y)                 // "(-5+10i)"
 	fmt.Println(real(x*y))           // "-5"
 	fmt.Println(imag(x*y))           // "10"
+}
+
+func main33(){
+	fmt.Println(cmplx.Exp(1i*math.Pi)+1)
+	fmt.Printf("%.3f\n",cmplx.Exp(1i*math.Pi)+1)
+
+	main2()
+}
+
+
+func main2(){
+	var a,b int = 3,4
+	var c int = int(math.Sqrt(float64(a*a+b*b)))
+	fmt.Println(c)
 }
