@@ -45,14 +45,15 @@ web
 
 */
 func BenchmarkSubstr(b *testing.B){
-	s := "黑化肥挥发发灰"
+	s := "黑化肥挥发发灰会花飞灰化肥挥发发黑会飞花"
+	//s := "黑化肥挥发发灰"
 	for i:=0;i<13;i++{
 		s = s + s
 	}
 
 	b.ResetTimer()
 
-	ans := 6
+	ans := 8
 	for i := 0;i<b.N;i++{
 		actual,_,_ := getMaxSubString(s)
 		if actual != ans {
@@ -61,14 +62,17 @@ func BenchmarkSubstr(b *testing.B){
 	}
 }
 
+/**
+
+ */
 func BenchmarkSubstr2(b *testing.B){
-	s := "黑化肥挥发发灰"
+	s := "黑化肥挥发发灰会花飞灰化肥挥发发黑会飞花"
 	for i:=0;i<13;i++{
 		s = s + s
 	}
 	b.ResetTimer()
 
-	ans := 6
+	ans := 8
 	for i := 0;i<b.N;i++{
 		actual,_,_ := getMaxSubStringNew(s)
 		if actual != ans {
