@@ -2,10 +2,10 @@ package main
 
 import (
 	"bufio"
+	stProto "ch61_protobuf/02http_demo/proto"
 	"fmt"
 	"net"
 	"os"
-	stProto "proto"
 	"time"
 
 	//protobuf编解码库,下面两个库是相互兼容的，可以使用其中任意一个
