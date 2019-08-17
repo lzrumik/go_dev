@@ -2,7 +2,7 @@ package main
 
 import (
 	"ch23_error/10unify_handling_errors/filelisting"
-	"github.com/astaxie/beego/logs"
+	"log"
 	"net/http"
 	"os"
 )
@@ -16,9 +16,22 @@ type appHandler func(writer http.ResponseWriter,request *http.Request)error
 func errWrapper( handler appHandler)/*前面参数 后面返回值 */ func(w http.ResponseWriter,r *http.Request){
 
 	return func(writer http.ResponseWriter, request *http.Request) {
+		defer func(){
+			if r := recover();r!=nil {
+				log.Printf("Panic: %v",r)
+				http.Error(writer,http.StatusText(http.StatusInternalServerError),http.StatusInternalServerError)
+				return
+			}
+		}()
+
 		err := handler(writer,request)
 		if err!= nil {
-			logs.Warn("Error handling request : %s",err.Error())
+			log.Printf("Panic: %v",err)
+			if usererr,ok := err.(userError);ok{
+				http.Error(writer,usererr.Message(),http.StatusBadRequest)
+				return
+			}
+
 			code := http.StatusOK
 			switch  {
 			case os.IsNotExist(err):
@@ -33,10 +46,17 @@ func errWrapper( handler appHandler)/*前面参数 后面返回值 */ func(w htt
 	}
 }
 
+/*
+给用户看的error
+ */
+type userError interface {
+	error
+	Message() string
+}
 
 //noinspection ALL
 func main (){
-	http.HandleFunc("/list/", errWrapper(filelisting.HandleFileList))
+	http.HandleFunc("/", errWrapper(filelisting.HandleFileList))
 	err := http.ListenAndServe(":8888",nil)
 	if err != nil {
 		panic(err)
