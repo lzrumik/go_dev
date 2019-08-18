@@ -4,6 +4,7 @@ import (
 	"ch23_error/10unify_handling_errors/filelisting"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 )
 
@@ -55,6 +56,23 @@ type userError interface {
 }
 
 //noinspection ALL
+/**
+http://localhost:8888/list/fib.txt
+http://localhost:8888/debug/pprof/
+http://localhost:8888/debug/pprof/goroutine?debug=1
+
+
+查看cpu
+go tool pprof http://localhost:8888/debug/pprof/profile
+
+web调用
+http://localhost:8888/list/src/ch01_basis/main.go
+
+web
+
+查看mem
+go tool pprof http://localhost:8888/debug/pprof/heap
+ */
 func main (){
 	http.HandleFunc("/", errWrapper(filelisting.HandleFileList))
 	err := http.ListenAndServe(":8888",nil)
