@@ -47,6 +47,18 @@ func(node *treeNode) TraverseFunc( f func(*treeNode) ){
 	node.right.TraverseFunc(f)
 }
 
+func (node *treeNode) TraverseWithChannel()chan *treeNode{
+	out := make(chan *treeNode)
+	go func(){
+		node.TraverseFunc( func(node *treeNode) {
+			out <- node
+		})
+		close(out)
+	}()
+	return out
+}
+
+
 /**
 结构体 栈分配 内部变量  堆分配 外部使用
 */
@@ -71,7 +83,15 @@ func main(){
 	root.TraverseFunc( func(node *treeNode){
 		nodeCount++
 	} )
-
 	fmt.Println("Node count:",nodeCount)
 
+
+	c := root.TraverseWithChannel()
+	maxNode := 0
+	for node := range c{
+		if node.value > maxNode{
+			maxNode = node.value
+		}
+	}
+	fmt.Println("Max node value:",maxNode)
 }
