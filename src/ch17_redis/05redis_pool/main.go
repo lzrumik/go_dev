@@ -37,5 +37,4 @@ func main() {
 	}
 
 	fmt.Println(r)
-	pool.Close()
 }

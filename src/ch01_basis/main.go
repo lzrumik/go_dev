@@ -1,41 +1,84 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"sync"
+	"strconv"
+	"strings"
+	"time"
 )
 
-func main(){
-
-	var wg sync.WaitGroup
-	for i:=0;i<10;i++{
-		wg.Add(1)
-		go geturl(&wg)
+//测试字符串连接
+func main2(){
+	str := "hello"
+	var s string
+	start := time.Now()
+	for i := 0 ; i < 100000; i++ {
+		s += str
 	}
+	end := time.Since(start)
 
-	wg.Wait()
+	fmt.Println(end)
+
+	var s2 strings.Builder
+	start2 := time.Now()
+	for i := 0 ; i < 100000; i++ {
+		s2.WriteString(str)
+	}
+	s2.String()
+	end2 := time.Since(start2)
+
+	fmt.Println(end2)
 }
 
 
-func geturl(wg *sync.WaitGroup) string {
-	//url := "http://127.0.0.1:8880/user/login"
-	url := "http://www.baidu.com"
-	res, err := http.Get(url)
-	if err != nil {
-		fmt.Println("get err:", err)
-		return ""
-	}
+//测试字符串连接
+func main3(){
+	var s strings.Builder
+	//var s string;
+	start := time.Now()
+	for i := 0 ; i < 100000; i++ {
 
-	data, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println("get data err:", err)
-		return ""
+		//s += strconv.Itoa(i)
+		s.WriteString(strconv.Itoa(i))
+		//fmt.Println(s)
 	}
-	res.Body.Close()
+	end := time.Since(start)
 
-	wg.Done()
-	fmt.Println(string(data))
-	return string(data)
+	fmt.Println(end)
+}
+
+
+//测试字符串连接
+func main(){
+	var s2 strings.Builder
+	start2 := time.Now()
+	for i := 0 ; i < 1000000; i++ {
+		s2.WriteString(strconv.Itoa(i))
+	}
+	s2.String()
+	end2 := time.Since(start2)
+
+	fmt.Println(end2)
+
+	var s3 bytes.Buffer
+	start3 := time.Now()
+	for i := 0 ; i < 1000000; i++ {
+		s3.WriteString(strconv.Itoa(i))
+	}
+	s3.String()
+	end3 := time.Since(start3)
+
+	fmt.Println(end3)
+
+
+	//var s string
+	//start := time.Now()
+	//for i := 0 ; i < 1000000; i++ {
+	//	s += strconv.Itoa(i)
+	//}
+	//end := time.Since(start)
+	//
+	//fmt.Println(end)
+
 }
